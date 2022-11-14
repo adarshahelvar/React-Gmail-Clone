@@ -4,7 +4,9 @@ function App() {
   return (
     <div className="App">
       <Header />
-      <Sidebar />
+      <div className="app__body">         {/* css in index.css*/}
+        <Sidebar />
+      </div>
     </div>
   );
 }
