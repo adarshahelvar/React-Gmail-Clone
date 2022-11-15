@@ -1,3 +1,4 @@
+import Compose from "./components/Compose";
 import EmailList from "./components/EmailList";
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
@@ -10,6 +11,7 @@ function App() {
         <Sidebar />
         <EmailList />
       </div>
+      <Compose />
     </div>
   );
 }
