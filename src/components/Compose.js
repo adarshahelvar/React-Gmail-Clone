@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import '../css/compose.css';
 import RemoveIcon from '@mui/icons-material/Remove';
 import HeightIcon from '@mui/icons-material/Height';
@@ -16,16 +16,50 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useDispatch } from 'react-redux';
 import { closeSendMessage } from '../features/mailSlice';
-
+import { db } from '../firebase';
+// import firebase from "firebase";
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/firestore';
 
 const Compose = () => {
+
+    const [to, setTo] = useState("");
+    const [subject, setSubject] = useState("");
+    const [message, setMessage] = useState("");
+
     const dispatch = useDispatch();
+
+    const formSubmit =(e)=>{
+        e.preventDefault();
+        if(to=== ""){
+            return alert("Please fill valid email address");
+        }
+        if(subject=== ""){
+            return alert("Please fill valid subject");
+        }
+        if(message=== ""){
+            return alert("Please fill valid message");
+        }
+
+        setTo("");
+        setSubject("");
+        setMessage("");
+        dispatch(closeSendMessage());
+
+        db.collection("emails").add({
+            to:to,
+            subject:subject,
+            message:message,
+            timestamp:firebase.firestore.FieldValue.serverTimestamp()
+        })
+        alert("Email sent successfully")
+    };
 
   return (
     <div className='compose'>
         <div className='compose__header'>
             <div className='compose__header__left'>
-                <span>New Messae</span>
+                <span>New Message</span>
             </div>
             <div className='compose__header__right'>
                 <RemoveIcon onClick={()=>dispatch(closeSendMessage())}/>
@@ -33,11 +67,12 @@ const Compose = () => {
                 <CloseIcon onClick={()=>dispatch(closeSendMessage())} />
             </div>
         </div>
+        <form onSubmit={formSubmit}>
         <div className='compose__body'>
             <div className='compose__bodyForm'>
-                <input type='email' placeholder='Recipents' />
-                <input type='text' placeholder='Subject' />
-                <textarea rows='20' />
+                <input type='email' placeholder='Recipents' value={to} onChange={(e)=>setTo(e.target.value)} />
+                <input type='text' placeholder='Subject' value={subject}  onChange={(e)=>setSubject(e.target.value)} />
+                <textarea rows='20' onChange={(e)=>setMessage(e.target.value)} >{message}</textarea>
             </div>
         </div>
         <div className='compose__footer'>
@@ -57,6 +92,7 @@ const Compose = () => {
                 <DeleteIcon/>
             </div>
         </div>
+        </form>
     </div>
   )
 };
