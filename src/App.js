@@ -5,15 +5,21 @@ import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 import { useSelector } from 'react-redux';
 import { selectsendMessageIsOpen } from './features/mailSlice';
+import { selectUser } from "./features/userSlice";
 import EmailDetail from "./components/EmailDetail";
+import Login from "./login";
 
 function App() {
   const isMessageOpen = useSelector(selectsendMessageIsOpen);
   console.log(isMessageOpen);
-  
+  const user= useSelector(selectUser);
+  console.log(user);
+
   return (
     <Router>
-      <div className="App">
+      {
+        user && (
+          <div className="App">
         <Header />
         <div className="app__body">         {/* css in index.css*/}
           <Sidebar />
@@ -28,6 +34,11 @@ function App() {
         </div>
         { isMessageOpen && <Compose />}
       </div>
+        ) } : {(
+          <Login />
+        )
+      }
+      
     </Router>
   );
 }
