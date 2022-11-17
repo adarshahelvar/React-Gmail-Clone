@@ -14,12 +14,14 @@ import LinkedCameraIcon from '@mui/icons-material/LinkedCamera';
 import CreateIcon from '@mui/icons-material/Create';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { closeSendMessage } from '../features/mailSlice';
 import { db } from '../firebase';
 // import firebase from "firebase";
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
+import { selectUser } from '../features/userSlice';
+
 
 const Compose = () => {
 
@@ -28,6 +30,8 @@ const Compose = () => {
     const [message, setMessage] = useState("");
 
     const dispatch = useDispatch();
+
+    const user = useSelector(selectUser);
 
     const formSubmit =(e)=>{
         e.preventDefault();
@@ -50,6 +54,8 @@ const Compose = () => {
             to:to,
             subject:subject,
             message:message,
+            from: user.email,
+            fromName: user.displayName,
             timestamp:firebase.firestore.FieldValue.serverTimestamp()
         })
         alert("Email sent successfully")

@@ -7,7 +7,7 @@ import LabelIcon from '@mui/icons-material/Label';
 import { useDispatch } from 'react-redux';
 import { openMessage } from '../features/mailSlice';
 
-const EmailBody = ({name, subject, message, time}) => {
+const EmailBody = ({name, subject, message, time, email}) => {
 // const EmailBody = (props) => {
     // console.log(props);
 const history = useHistory();
@@ -18,7 +18,8 @@ const history = useHistory();
             name,
             subject, 
             message, 
-            time
+            time,
+            email
         }))
 
         history.push('/mail')
