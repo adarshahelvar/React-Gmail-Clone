@@ -3,17 +3,37 @@ import Compose from "./components/Compose";
 import EmailList from "./components/EmailList";
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { selectsendMessageIsOpen } from './features/mailSlice';
-import { selectUser } from "./features/userSlice";
+import { selectUser, signin, signout } from "./features/userSlice";
 import EmailDetail from "./components/EmailDetail";
 import Login from "./login";
+import { useEffect } from "react";
+import { auth } from "./firebase";
 
 function App() {
+
+  const dispatch = useDispatch();
+
   const isMessageOpen = useSelector(selectsendMessageIsOpen);
-  console.log(isMessageOpen);
+  // console.log(isMessageOpen);
   const user= useSelector(selectUser);
-  console.log(user);
+  // console.log(user);
+
+  useEffect(()=>{
+    auth.onAuthStateChanged((user)=>{
+      if(user){
+        dispatch(signin({
+          displayName: user.displayName,
+          photoURL: user.photoURL,
+          email: user.email,
+        }))
+      }
+      else{
+          dispatch(signout())
+      }
+    })
+  },[]);
 
   return (
     <Router>

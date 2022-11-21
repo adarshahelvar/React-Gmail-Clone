@@ -26,7 +26,7 @@ const Sidebar = () => {
     <div className='sidebar'>
         <Button startIcon={<AddIcon />} className='compose__btn' onClick={()=>dispatch(openSendMessage())} >Compose</Button>
 
-        <SidebarOptions Icon={InboxIcon} title="Inbox" number="224" isactive={true} />
+        <SidebarOptions Icon={InboxIcon} title="Inbox" number="" isactive={true} />
         <SidebarOptions Icon={StarRateIcon} title={"Starred"} number="500" />
         <SidebarOptions Icon={WatchLaterIcon} title={"Snoozed"} number="300" />
         <SidebarOptions Icon={LabelImportantIcon} title={"Important"} number="452" />
